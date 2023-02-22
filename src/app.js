@@ -82,13 +82,13 @@ app.post("/register",async(req,res)=>{
             })
 // genertae token 
             console.log(`The sucsess part ${registerEmployee}`);
-            // const token = await registerEmployee.genrateAuthToken();
-            // console.log(`The token part ${token}`);
-            // res.cookie("jwt",token,{
-            //     expires:new Date(Date.now() + 30000),
-            //     httpOnly:true
-            // });
-            // console.log(cookie);
+            const token = await registerEmployee.genrateAuthToken();
+            console.log(`The token part ${token}`);
+            res.cookie("jwt",token,{
+                expires:new Date(Date.now() + 30000),
+                httpOnly:true
+            });
+            console.log(cookie);
             const registered = await registerEmployee.save();
             console.log("The page part " + registered);
             res.status(201).render("index");
@@ -108,12 +108,12 @@ app.post("/login",async(req,res)=>{
         const password = req.body.password;
         const useremail = await Register.findOne({email:email});
         const isMatch = await bcrypt.compare(password,useremail.password);
-        // const token = await useremail.genrateAuthToken();
-        // console.log(`The token part ${token}`);
-        // res.cookie("jwt",token,{
-        //     expires:new Date(Date.now() + 30000),
-        //     httpOnly:true
-        // });
+        const token = await useremail.genrateAuthToken();
+        console.log(`The token part ${token}`);
+        res.cookie("jwt",token,{
+            expires:new Date(Date.now() + 30000),
+            httpOnly:true
+        });
         if(isMatch){
             res.status(201).render("index");
         }else{
